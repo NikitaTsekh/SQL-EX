@@ -1,0 +1,19 @@
+--
+№ 185
+Выбрать игроков, которые участвовали во всех играх сезона.
+Вывод: имя игрока, фамилия игрока.
+
+---
+
+WITH t1 AS
+
+(
+SELECT l.player_id
+FROM lineups l
+WHERE time_in IS NOT NULL
+GROUP BY (l.player_id)
+HAVING COUNT(game_id) =(SELECT COUNT(DISTINCT game_id) FROM games)
+)
+
+SELECT pl.first_name,pl.last_name FROM t1  
+LEFT JOIN players pl ON t1.player_id = pl.player_id
